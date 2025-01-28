@@ -35,7 +35,7 @@ Os relatórios a seguir foram solicitados:
 # Requisitos Técnicos 
 
  
-A solução deve utilizar o template já estruturado localizado no GitHub 
+A solução deve utilizar o template já estruturado disponível neste repositório, basta criar um fork ou clonar para começar.
 
 - Toda implementação deve ser feita dentro do projeto ApiService encontrado no template. Recomenda-se não alterar o código dos outros projetos, porém, caso julgue necessário, alterações podem ser realizadas. 
 - A solução deverá fornecer uma API para que as empresas dos pedágios possam enviar os dados.  
