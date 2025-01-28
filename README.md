@@ -46,7 +46,9 @@ A solução deve utilizar o template já estruturado disponível neste repositó
 - Para facilitar o uso do broker a biblioteca Rebus está disponível, bastando apenas a criação de mensagens e seus respectivos “ouvintes”. 
 - A implementação de testes para demonstrar o potencial da solução garantirá pontos extras. 
 - A solução fornece suporte para OpenTelemetry 
-- Considerar que milhões de registros serão ingeridos pela aplicação.  
+- Considerar que milhões de registros serão ingeridos pela aplicação. 
+- Os componentes existentes podem ser alterados, por exemplo SQL Server -> Postgres ou RabbitMQ -> Kafka. 
+- Novos componentes podem ser agregados a solução, caso seja necessário.
 
  
 
