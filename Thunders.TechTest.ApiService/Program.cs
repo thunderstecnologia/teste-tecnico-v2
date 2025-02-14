@@ -34,7 +34,12 @@ builder.Services.AddIdentity<User, IdentityRole>()
     .AddDefaultTokenProviders();
 
 var jwtSettings = builder.Configuration.GetSection("JwtSettings");
-var key = Encoding.ASCII.GetBytes(jwtSettings["Secret"]);
+var secret = jwtSettings["Secret"];
+if (string.IsNullOrEmpty(secret))
+{
+    throw new InvalidOperationException("JWT Secret is not configured properly.");
+}
+var key = Encoding.ASCII.GetBytes(secret);
 
 builder.Services.AddAuthentication(options =>
 {
@@ -83,8 +88,12 @@ if (features.UseEntityFramework)
     builder.Services.AddSqlServerDbContext<DbContext>(builder.Configuration);
 }
 
+builder.Services.AddHealthChecks();
 
 var app = builder.Build();
+
+app.UseAuthentication();
+app.UseAuthorization();
 
 // Configure the HTTP request pipeline.
 app.UseExceptionHandler();
