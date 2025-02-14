@@ -1,4 +1,5 @@
 using Microsoft.EntityFrameworkCore;
+using OpenTelemetry.Trace;
 using Serilog;
 using Thunders.TechTest.ApiService;
 using Thunders.TechTest.OutOfBox.Database;
@@ -18,6 +19,12 @@ builder.Host.UseSerilog((context, config) =>
 {
     config.ReadFrom.Configuration(context.Configuration);
 });
+
+builder.Services.AddOpenTelemetry()
+    .WithTracing(tracing => tracing
+        .AddAspNetCoreInstrumentation()
+        .AddHttpClientInstrumentation()
+        .AddConsoleExporter());
 
 builder.AddServiceDefaults();
 builder.Services.AddControllers();
