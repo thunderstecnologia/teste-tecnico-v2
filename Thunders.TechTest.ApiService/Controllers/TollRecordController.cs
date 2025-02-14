@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Thunders.TechTest.ApiService.Controllers.Interfaces;
 using Thunders.TechTest.ApiService.Dto.Request;
 using Thunders.TechTest.ApiService.Dto.Response;
@@ -6,6 +7,7 @@ using Thunders.TechTest.ApiService.Services.Interfaces;
 
 namespace Thunders.TechTest.ApiService.Controllers
 {
+    [Authorize]
     [ApiController]
     [Route("api/toll-records")]
     public class TollRecordController : ControllerBase, ITollRecordController

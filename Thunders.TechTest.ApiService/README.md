@@ -18,3 +18,10 @@ Se houver a necessidade de rodar o projeto em contêineres ou ambientes distribu
 $Env:ASPNETCORE_ENVIRONMENT = "Development"  # (Windows PowerShell)
 export ASPNETCORE_ENVIRONMENT=Development    # (Linux/macOS)
 ```
+
+---
+
+> ⚠️ **Atenção - JWT**  
+>  
+> - A `Secret` deve ter pelo menos **32 caracteres** para segurança adequada.  
+> - No futuro, podemos **mover essa chave para variáveis de ambiente**.  

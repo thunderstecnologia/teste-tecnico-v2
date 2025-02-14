@@ -1,10 +1,12 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Thunders.TechTest.ApiService.Controllers.Internal.Interfaces;
 using Thunders.TechTest.ApiService.Dto.Request;
 using Thunders.TechTest.ApiService.Dto.Response;
 
 namespace Thunders.TechTest.ApiService.Controllers.Internal
 {
+    [Authorize(Roles = "Internal")]
     [ApiController]
     [Route("api/internal/toll-records")]
     public class TollRecordInternalController : ControllerBase, ITollRecordInternalController

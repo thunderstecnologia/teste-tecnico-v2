@@ -14,7 +14,12 @@ namespace Thunders.TechTest.ApiService.Repositories.Configurations
         {
             base.OnModelCreating(modelBuilder);
 
+            modelBuilder.Entity<User>()
+                .Property(u => u.Role)
+                .IsRequired();
+
             // Aplicando configurações de entidades separadas
+            modelBuilder.ApplyConfiguration(new TollRecordConfiguration());
             modelBuilder.ApplyConfiguration(new TollRecordConfiguration());
         }
     }
