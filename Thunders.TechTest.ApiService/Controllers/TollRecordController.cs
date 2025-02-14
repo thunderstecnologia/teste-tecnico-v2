@@ -11,10 +11,14 @@ namespace Thunders.TechTest.ApiService.Controllers
     public class TollRecordController : ControllerBase, ITollRecordController
     {
         private readonly ITollRecordService _service;
+        private readonly ILogger<TollRecordController> _logger;
 
-        public TollRecordController(ITollRecordService service)
+        public TollRecordController(
+            ITollRecordService service,
+            ILogger<TollRecordController> logger)
         {
             _service = service;
+            _logger = logger;
         }
 
         [HttpPost]
@@ -22,6 +26,7 @@ namespace Thunders.TechTest.ApiService.Controllers
         {
             if (!ModelState.IsValid)
             {
+                _logger.LogWarning("Invalid request: {@request}", request);
                 return BadRequest(ModelState);
             }
             await _service.CreateAsync(request);

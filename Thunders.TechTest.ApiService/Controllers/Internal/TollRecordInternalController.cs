@@ -10,10 +10,14 @@ namespace Thunders.TechTest.ApiService.Controllers.Internal
     public class TollRecordInternalController : ControllerBase, ITollRecordInternalController
     {
         private readonly ITollRecordInternalController _service;
+        private readonly ILogger<TollRecordInternalController> _logger;
 
-        public TollRecordInternalController(ITollRecordInternalController service)
+        public TollRecordInternalController(
+            ITollRecordInternalController service, 
+            ILogger<TollRecordInternalController> logger)
         {
             _service = service;
+            _logger = logger;
         }
 
         [HttpGet]
@@ -29,6 +33,7 @@ namespace Thunders.TechTest.ApiService.Controllers.Internal
             var record = await _service.GetByIdAsync(id);
             if (record == null)
             {
+                _logger.LogWarning("Record not found: {id}", id);
                 return NotFound();
             }
             return Ok(record);
@@ -53,6 +58,7 @@ namespace Thunders.TechTest.ApiService.Controllers.Internal
         {
             if (!ModelState.IsValid)
             {
+                _logger.LogWarning("Invalid request: {@request}", request);
                 return BadRequest(ModelState);
             }
             await _service.MarkAsDeletedAsync(request);
