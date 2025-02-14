@@ -19,6 +19,7 @@ builder.Services.ConfigureJwtAuthentication(builder.Configuration);
 builder.Services.ConfigureOpenTelemetry(builder.Configuration);
 builder.Services.ConfigureFeatures(builder.Configuration);
 builder.Services.ConfigureSwagger(builder.Configuration);
+builder.Services.ConfigureCors();
 
 builder.AddServiceDefaults();
 builder.Services.AddControllers();

@@ -36,6 +36,8 @@ namespace Thunders.TechTest.ApiService.Configurations.Extensions
             app.MapDefaultEndpoints();
             app.MapControllers();
 
+            app.UseCors("AllowAll");
+
             return app;
         }
     }
