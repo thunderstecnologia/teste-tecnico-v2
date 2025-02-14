@@ -38,14 +38,19 @@ namespace Thunders.TechTest.ApiService.Controllers
         private string GenerateJwtToken(User user)
         {
             var jwtSettings = _configuration.GetSection("JwtSettings");
-            var key = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(jwtSettings["Secret"]));
+            var secret = jwtSettings["Secret"];
+            if (string.IsNullOrEmpty(secret))
+            {
+                throw new InvalidOperationException("JWT Secret is not configured.");
+            }
+            var key = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(secret));
             var credentials = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
 
             var claims = new List<Claim>
             {
-                new Claim(ClaimTypes.Name, user.UserName),
-                new Claim(ClaimTypes.Email, user.Email),
-                new Claim(ClaimTypes.Role, user.Role) // Defines Client or Internal role
+                new (ClaimTypes.Name, user.UserName ?? string.Empty),
+                new (ClaimTypes.Email, user.Email ?? string.Empty),
+                new (ClaimTypes.Role, user.Role) // Defines Client or Internal role
             };
 
             var token = new JwtSecurityToken(

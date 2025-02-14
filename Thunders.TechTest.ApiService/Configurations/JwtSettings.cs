@@ -1,4 +1,4 @@
-﻿namespace Thunders.TechTest.ApiService.Configurations.Models
+﻿namespace Thunders.TechTest.ApiService.Configurations
 {
     public class JwtSettings
     {
