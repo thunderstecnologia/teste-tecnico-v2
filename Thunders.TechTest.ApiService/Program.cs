@@ -22,7 +22,6 @@ builder.Services
     .ConfigureFeatures(builder.Configuration)
     .ConfigureSwagger(builder.Configuration)
     .ConfigureRabbitMQ(builder.Configuration)
-    .ConfigureRebus()
     .ConfigureCors();
 
 builder.AddServiceDefaults();

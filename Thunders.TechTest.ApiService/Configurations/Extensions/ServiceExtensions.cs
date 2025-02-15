@@ -159,16 +159,6 @@ namespace Thunders.TechTest.ApiService.Configurations.Extensions
             return services;
         }
 
-        public static IServiceCollection ConfigureRebus(this IServiceCollection services)
-        {
-            services.AddRebus(configure => configure
-                .Transport(t => t.UseRabbitMq("amqp://localhost", "report-queue")
-            ));
-
-            services.AutoRegisterHandlersFromAssemblyOf<GenerateReportConsumer>();
-            return services;
-        }
-
         public static IServiceCollection ConfigureCors(this IServiceCollection services)
         {
             services.AddCors(options =>
@@ -192,6 +182,8 @@ namespace Thunders.TechTest.ApiService.Configurations.Extensions
             services.AddRebus(configure => configure
                 .Transport(t => t.UseRabbitMq(rabbitMqSettings.Host, rabbitMqSettings.Queue))
             );
+
+            services.AutoRegisterHandlersFromAssemblyOf<GenerateReportConsumer>();
 
             return services;
         }
