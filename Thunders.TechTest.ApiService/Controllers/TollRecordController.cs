@@ -2,7 +2,6 @@
 using Microsoft.AspNetCore.Mvc;
 using Thunders.TechTest.ApiService.Controllers.Interfaces;
 using Thunders.TechTest.ApiService.Dto.Request;
-using Thunders.TechTest.ApiService.Dto.Response;
 using Thunders.TechTest.ApiService.Services.Interfaces;
 using Thunders.TechTest.ApiService.Services.Internal.Interfaces;
 

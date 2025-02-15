@@ -1,7 +1,4 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using System;
-using System.ComponentModel.DataAnnotations;
-using Thunders.TechTest.ApiService.Enums;
 using Thunders.TechTest.ApiService.Models;
 using Thunders.TechTest.ApiService.Repositories.Configurations;
 using Thunders.TechTest.ApiService.Repositories.Interfaces;
@@ -23,7 +20,6 @@ namespace Thunders.TechTest.ApiService.Repositories
 
             return entity.Id;
         }
-
 
         public Task DeleteAsync(long id)
         {

@@ -16,7 +16,6 @@ namespace Thunders.TechTest.ApiService.Repositories.Configurations
         {
             base.OnModelCreating(modelBuilder);
 
-            // Aplicando configurações de entidades separadas
             modelBuilder.ApplyConfiguration(new TollRecordConfiguration());
             modelBuilder.ApplyConfiguration(new ReportConfiguration());
         }

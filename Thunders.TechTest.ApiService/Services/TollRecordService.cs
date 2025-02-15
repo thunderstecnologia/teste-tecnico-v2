@@ -1,5 +1,4 @@
 ﻿using Thunders.TechTest.ApiService.Dto.Request;
-using Thunders.TechTest.ApiService.Dto.Response;
 using Thunders.TechTest.ApiService.Models;
 using Thunders.TechTest.ApiService.Repositories.Interfaces;
 using Thunders.TechTest.ApiService.Services.Interfaces;
@@ -33,6 +32,5 @@ namespace Thunders.TechTest.ApiService.Services
 
             return await _repository.CreateAsync(entity);
         }
-
     }
 }

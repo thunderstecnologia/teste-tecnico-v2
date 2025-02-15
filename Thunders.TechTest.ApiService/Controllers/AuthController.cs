@@ -67,6 +67,5 @@ namespace Thunders.TechTest.ApiService.Controllers
 
             return new JwtSecurityTokenHandler().WriteToken(token);
         }
-
     }
 }

@@ -1,14 +1,10 @@
 ﻿using Rebus.Bus;
-using Thunders.TechTest.ApiService.Models;
-using Thunders.TechTest.ApiService.Reports.Strategies.Interfaces;
-using Thunders.TechTest.ApiService.Reports;
-using Thunders.TechTest.ApiService.Repositories.Configurations;
-using Thunders.TechTest.ApiService.Services.Interfaces;
+using System.Text.Json;
 using Thunders.TechTest.ApiService.Dto.Request;
 using Thunders.TechTest.ApiService.Dto.Response;
-using Thunders.TechTest.ApiService.Repositories.Interfaces;
 using Thunders.TechTest.ApiService.Mapper.Interfaces;
-using System.Text.Json;
+using Thunders.TechTest.ApiService.Repositories.Interfaces;
+using Thunders.TechTest.ApiService.Services.Interfaces;
 
 namespace Thunders.TechTest.ApiService.Services
 {

@@ -3,9 +3,6 @@ using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
 using Thunders.TechTest.ApiService.Controllers.Interfaces;
 using Thunders.TechTest.ApiService.Dto.Request;
-using Thunders.TechTest.ApiService.Reports;
-using Thunders.TechTest.ApiService.Reports.Enums;
-using Thunders.TechTest.ApiService.Reports.Strategies.Interfaces;
 using Thunders.TechTest.ApiService.Repositories.Configurations;
 using Thunders.TechTest.ApiService.Services.Interfaces;
 
