@@ -4,7 +4,8 @@ namespace Thunders.TechTest.ApiService.Reports
 {
     public class GenerateReportMessage
     {
-        public ReportType ReportType { get; set; }
+        public long ReportId { get; set; }
+        public required ReportType ReportType { get; set; }
         public string? CallbackUrl { get; set; }
         public DateTime? StartDate { get; set; }
         public DateTime? EndDate { get; set; }

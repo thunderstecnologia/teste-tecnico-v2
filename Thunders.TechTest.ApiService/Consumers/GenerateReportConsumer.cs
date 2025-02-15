@@ -22,7 +22,7 @@ namespace Thunders.TechTest.ApiService.Consumers
         public async Task Handle(GenerateReportMessage message)
         {
             var strategy = _strategyFactory.GetStrategy(message.ReportType);
-            var reportResult = await strategy.GenerateReport(_dbContext, message);
+            var reportResult = await strategy.GenerateReportData(_dbContext, message);
 
             var typedReportResult = (dynamic)reportResult;
 

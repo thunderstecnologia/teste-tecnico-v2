@@ -1,71 +1,90 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
-using Thunders.TechTest.ApiService.Dto.Filter;
+using Thunders.TechTest.ApiService.Controllers.Interfaces;
+using Thunders.TechTest.ApiService.Dto.Request;
 using Thunders.TechTest.ApiService.Reports;
 using Thunders.TechTest.ApiService.Reports.Enums;
 using Thunders.TechTest.ApiService.Reports.Strategies.Interfaces;
 using Thunders.TechTest.ApiService.Repositories.Configurations;
+using Thunders.TechTest.ApiService.Services.Interfaces;
 
 namespace Thunders.TechTest.ApiService.Controllers
 {
     [Authorize]
     [ApiController]
     [Route("api/[controller]")]
-    public class ReportController : ControllerBase
+    public class ReportController : ControllerBase, IReportController
     {
         private readonly AppDbContext _dbContext;
-        private readonly IEnumerable<IReportStrategy> _reportStrategies;
+        private readonly IReportService _reportService;
 
-        public ReportController(AppDbContext dbContext, IEnumerable<IReportStrategy> reportStrategies)
+        public ReportController(
+            AppDbContext dbContext,
+            IReportService reportService)
         {
             _dbContext = dbContext;
-            _reportStrategies = reportStrategies;
+            _reportService = reportService;
         }
 
-        [HttpPost("total-value-by-hour-by-city")]
-        public async Task<IActionResult> GetTotalValueByHourByCity([FromBody] DateRangeFilter dateRangeFilter)
+        [HttpPost("GenerateTopTollPlazasReport")]
+        public async Task<IActionResult> GenerateTopTollPlazasReportRequest([FromBody] TopTollPlazasReportRequestDto request)
         {
-            var strategy = _reportStrategies.FirstOrDefault(s => s.ReportType == ReportType.TotalValueByHourByCity);
-            if (strategy == null)
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            if (userId == null)
             {
-                return NotFound("Report strategy not found.");
+                return Unauthorized();
             }
 
-            var email = User.FindFirst(ClaimTypes.Email)?.Value;
+            var createdBy = User.FindFirstValue(ClaimTypes.Email) ?? User.Identity?.Name;
+            if (createdBy == null)
+            {
+                return BadRequest("Unable to determine the user creating the report.");
+            }
 
-            var report = await strategy.GenerateReport(_dbContext, new GenerateReportMessage { StartDate = dateRangeFilter.StartDate, EndDate = dateRangeFilter.EndDate, CreatedBy = email! });
-            return Ok(report);
+            request.CreatedBy = createdBy;
+            var response = await _reportService.GenerateAndSaveReportAsync(request);
+            return Ok(response);
         }
 
-        [HttpPost("top-toll-plazas-by-month")]
-        public async Task<IActionResult> GetTopTollPlazasByMonth([FromBody] DateRangeFilter dateRangeFilter, [FromBody] QuantityFilter quantityFilter)
+        [HttpPost("GenerateTotalValueByHourByCityReport")]
+        public async Task<IActionResult> GenerateTotalValueByHourByCityReportRequest([FromBody] TotalValueByHourByCityReportRequestDto request)
         {
-            var strategy = _reportStrategies.FirstOrDefault(s => s.ReportType == ReportType.TopTollPlazas);
-            if (strategy == null)
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            if (userId == null)
             {
-                return NotFound("Report strategy not found.");
+                return Unauthorized();
             }
 
-            var email = User.FindFirst(ClaimTypes.Email)?.Value;
+            var createdBy = User.FindFirstValue(ClaimTypes.Email) ?? User.Identity?.Name;
+            if (createdBy == null)
+            {
+                return BadRequest("Unable to determine the user creating the report.");
+            }
 
-            var report = await strategy.GenerateReport(_dbContext, new GenerateReportMessage { StartDate = dateRangeFilter.StartDate, EndDate = dateRangeFilter.EndDate, Quantity = quantityFilter.Quantity, CreatedBy = email! });
-            return Ok(report);
+            request.CreatedBy = createdBy;
+            var response = await _reportService.GenerateAndSaveReportAsync(request);
+            return Ok(response);
         }
 
-        [HttpPost("vehicle-types-by-toll-booth")]
-        public async Task<IActionResult> GetVehicleTypesByTollBooth([FromBody] TollBoothFilter tollBoothFilter, [FromBody] DateRangeFilter dateRangeFilter)
+        [HttpPost("GenerateVehicleTypeCountReport")]
+        public async Task<IActionResult> GenerateVehicleTypeCountReportRequest([FromBody] VehicleTypeCountReportRequestDto request)
         {
-            var strategy = _reportStrategies.FirstOrDefault(s => s.ReportType == ReportType.VehicleTypeCount);
-            if (strategy == null)
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            if (userId == null)
             {
-                return NotFound("Report strategy not found.");
+                return Unauthorized();
             }
 
-            var email = User.FindFirst(ClaimTypes.Email)?.Value;
+            var createdBy = User.FindFirstValue(ClaimTypes.Email) ?? User.Identity?.Name;
+            if (createdBy == null)
+            {
+                return BadRequest("Unable to determine the user creating the report.");
+            }
 
-            var report = await strategy.GenerateReport(_dbContext, new GenerateReportMessage { TollBooth = tollBoothFilter.TollBoothId, StartDate = dateRangeFilter.StartDate, EndDate = dateRangeFilter.EndDate, CreatedBy = email! });
-            return Ok(report);
+            request.CreatedBy = createdBy;
+            var response = await _reportService.GenerateAndSaveReportAsync(request);
+            return Ok(response);
         }
     }
 }

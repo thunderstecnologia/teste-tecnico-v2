@@ -2,6 +2,6 @@
 {
     public class TollBoothFilter
     {
-        public string? TollBoothId { get; set; }
+        public string? TollBooth { get; set; }
     }
 }
