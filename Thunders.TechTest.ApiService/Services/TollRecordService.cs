@@ -15,7 +15,7 @@ namespace Thunders.TechTest.ApiService.Services
             _repository = repository;
         }
 
-        public async Task CreateAsync(TollRecordRequestDto request)
+        public async Task<long> CreateAsync(TollRecordRequestDto request)
         {
             var entity = new TollRecord
             {
@@ -31,7 +31,8 @@ namespace Thunders.TechTest.ApiService.Services
                 CreatedAt = DateTime.UtcNow
             };
 
-            await _repository.CreateAsync(entity);
+            return await _repository.CreateAsync(entity);
         }
+
     }
 }

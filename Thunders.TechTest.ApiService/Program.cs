@@ -1,5 +1,6 @@
 using Thunders.TechTest.ApiService.Configurations;
 using Thunders.TechTest.ApiService.Configurations.Extensions;
+using Thunders.TechTest.ApiService.Repositories.Seed;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -22,6 +23,9 @@ builder.Services.ConfigureSwagger(builder.Configuration);
 builder.Services.ConfigureCors();
 
 builder.AddServiceDefaults();
+builder.Services.ConfigureRepositories();
+builder.Services.ConfigureServices();
+builder.Services.ConfigureControllers();
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddProblemDetails();
@@ -30,5 +34,12 @@ builder.Services.AddHealthChecks();
 var app = builder.Build();
 
 app.ConfigureMiddlewares();
+
+if (app.Environment.IsDevelopment())
+{
+    using var scope = app.Services.CreateScope();
+    var services = scope.ServiceProvider;
+    await SeedData.InitializeAsync(services);
+}
 
 app.Run();

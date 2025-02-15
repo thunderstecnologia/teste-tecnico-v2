@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using Thunders.TechTest.ApiService.Controllers.Internal.Interfaces;
 using Thunders.TechTest.ApiService.Dto.Request;
 using Thunders.TechTest.ApiService.Dto.Response;
+using Thunders.TechTest.ApiService.Services.Internal.Interfaces;
 
 namespace Thunders.TechTest.ApiService.Controllers.Internal
 {
@@ -11,11 +12,11 @@ namespace Thunders.TechTest.ApiService.Controllers.Internal
     [Route("api/internal/toll-records")]
     public class TollRecordInternalController : ControllerBase, ITollRecordInternalController
     {
-        private readonly ITollRecordInternalController _service;
+        private readonly ITollRecordInternalService _service;
         private readonly ILogger<TollRecordInternalController> _logger;
 
         public TollRecordInternalController(
-            ITollRecordInternalController service, 
+            ITollRecordInternalService service, 
             ILogger<TollRecordInternalController> logger)
         {
             _service = service;

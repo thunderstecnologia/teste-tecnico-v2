@@ -5,6 +5,6 @@ namespace Thunders.TechTest.ApiService.Services.Interfaces
 {
     public interface ITollRecordService
     {
-        Task CreateAsync(TollRecordRequestDto request);
+        Task<long> CreateAsync(TollRecordRequestDto request);
     }
 }

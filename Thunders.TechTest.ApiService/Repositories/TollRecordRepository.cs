@@ -16,11 +16,14 @@ namespace Thunders.TechTest.ApiService.Repositories
         {
             _context = context;
         }
-        public async Task CreateAsync(TollRecord entity)
+        public async Task<long> CreateAsync(TollRecord entity)
         {
             await _context.TollRecords.AddAsync(entity);
             await _context.SaveChangesAsync();
+
+            return entity.Id;
         }
+
 
         public Task DeleteAsync(long id)
         {

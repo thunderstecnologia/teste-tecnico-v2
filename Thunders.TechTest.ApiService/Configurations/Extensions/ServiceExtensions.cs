@@ -5,8 +5,17 @@ using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using OpenTelemetry.Trace;
 using System.Text;
-using Thunders.TechTest.ApiService.Models;
+using Thunders.TechTest.ApiService.Controllers;
+using Thunders.TechTest.ApiService.Controllers.Interfaces;
+using Thunders.TechTest.ApiService.Controllers.Internal;
+using Thunders.TechTest.ApiService.Controllers.Internal.Interfaces;
+using Thunders.TechTest.ApiService.Repositories;
 using Thunders.TechTest.ApiService.Repositories.Configurations;
+using Thunders.TechTest.ApiService.Repositories.Interfaces;
+using Thunders.TechTest.ApiService.Services;
+using Thunders.TechTest.ApiService.Services.Interfaces;
+using Thunders.TechTest.ApiService.Services.Internal;
+using Thunders.TechTest.ApiService.Services.Internal.Interfaces;
 using Thunders.TechTest.OutOfBox.Database;
 using Thunders.TechTest.OutOfBox.Queues;
 
@@ -23,7 +32,7 @@ namespace Thunders.TechTest.ApiService.Configurations.Extensions
 
         public static IServiceCollection ConfigureIdentity(this IServiceCollection services, IConfiguration configuration)
         {
-            services.AddIdentity<User, IdentityRole>()
+            services.AddIdentity<IdentityUser, IdentityRole>()
                 .AddEntityFrameworkStores<AppDbContext>()
                 .AddDefaultTokenProviders();
             return services;
@@ -156,5 +165,21 @@ namespace Thunders.TechTest.ApiService.Configurations.Extensions
             });
         }
 
+        public static void ConfigureControllers(this IServiceCollection services)
+        {
+            services.AddScoped<ITollRecordController, TollRecordController>();
+            services.AddScoped<ITollRecordInternalController, TollRecordInternalController>();
+        }
+
+        public static void ConfigureServices(this IServiceCollection services)
+        {
+            services.AddScoped<ITollRecordService, TollRecordService>();
+            services.AddScoped<ITollRecordInternalService, TollRecordInternalService>();
+        }
+
+        public static void ConfigureRepositories(this IServiceCollection services)
+        {
+            services.AddScoped<ITollRecordRepository, TollRecordRepository>();
+        }
     }
 }

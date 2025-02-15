@@ -25,3 +25,31 @@ export ASPNETCORE_ENVIRONMENT=Development    # (Linux/macOS)
 >  
 > - A `Secret` deve ter pelo menos **32 caracteres** para segurança adequada.  
 > - No futuro, podemos **mover essa chave para variáveis de ambiente**.  
+
+
+---
+
+### Migrations
+
+```powershell
+dotnet ef migrations add CreateInitialSchema -p Thunders.TechTest.ApiService/Thunders.TechTest.ApiService.csproj -s Thunders.TechTest.ApiService/Thunders.TechTest.ApiService.csproj --context AppDbContext
+
+```
+
+
+```powershell
+dotnet ef database update -p Thunders.TechTest.ApiService/Thunders.TechTest.ApiService.csproj -s Thunders.TechTest.ApiService/Thunders.TechTest.ApiService.csproj --context AppDbContext
+
+```
+
+```powershell
+dotnet ef migrations add IdentityUpdate -p Thunders.TechTest.ApiService/Thunders.TechTest.ApiService.csproj -s Thunders.TechTest.ApiService/Thunders.TechTest.ApiService.csproj --context AppDbContext
+
+```
+
+```powershell
+dotnet ef database update -p Thunders.TechTest.ApiService/Thunders.TechTest.ApiService.csproj -s Thunders.TechTest.ApiService/Thunders.TechTest.ApiService.csproj --context AppDbContext
+
+```
+
+

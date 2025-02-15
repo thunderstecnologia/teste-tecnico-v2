@@ -1,11 +1,10 @@
-﻿using Microsoft.AspNetCore.Identity.Data;
-using Microsoft.AspNetCore.Identity;
+﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.Data;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
-using Thunders.TechTest.ApiService.Models;
 
 namespace Thunders.TechTest.ApiService.Controllers
 {
@@ -13,10 +12,10 @@ namespace Thunders.TechTest.ApiService.Controllers
     [ApiController]
     public class AuthController : ControllerBase
     {
-        private readonly UserManager<User> _userManager;
+        private readonly UserManager<IdentityUser> _userManager;
         private readonly IConfiguration _configuration;
 
-        public AuthController(UserManager<User> userManager, IConfiguration configuration)
+        public AuthController(UserManager<IdentityUser> userManager, IConfiguration configuration)
         {
             _userManager = userManager;
             _configuration = configuration;
@@ -28,14 +27,14 @@ namespace Thunders.TechTest.ApiService.Controllers
             var user = await _userManager.FindByEmailAsync(model.Email);
             if (user != null && await _userManager.CheckPasswordAsync(user, model.Password))
             {
-                var token = GenerateJwtToken(user);
+                var token = await GenerateJwtTokenAsync(user);
                 return Ok(new { Token = token });
             }
 
             return Unauthorized("Invalid email or password.");
         }
 
-        private string GenerateJwtToken(User user)
+        private async Task<string> GenerateJwtTokenAsync(IdentityUser user)
         {
             var jwtSettings = _configuration.GetSection("JwtSettings");
             var secret = jwtSettings["Secret"];
@@ -46,12 +45,18 @@ namespace Thunders.TechTest.ApiService.Controllers
             var key = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(secret));
             var credentials = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
 
+            var roles = await _userManager.GetRolesAsync(user);
+
             var claims = new List<Claim>
-            {
-                new (ClaimTypes.Name, user.UserName ?? string.Empty),
-                new (ClaimTypes.Email, user.Email ?? string.Empty),
-                new (ClaimTypes.Role, user.Role) // Defines Client or Internal role
+            {        
+                new Claim(ClaimTypes.Name, user.UserName ?? string.Empty),
+                new Claim(ClaimTypes.Email, user.Email ?? string.Empty)
             };
+
+            foreach (var role in roles)
+            {
+                claims.Add(new Claim(ClaimTypes.Role, role));
+            }
 
             var token = new JwtSecurityToken(
                 issuer: jwtSettings["Issuer"],
@@ -62,5 +67,6 @@ namespace Thunders.TechTest.ApiService.Controllers
 
             return new JwtSecurityTokenHandler().WriteToken(token);
         }
+
     }
 }
