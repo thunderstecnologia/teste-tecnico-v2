@@ -1,8 +1,6 @@
 using Thunders.TechTest.ApiService.Configurations;
 using Thunders.TechTest.ApiService.Configurations.Extensions;
-using Thunders.TechTest.ApiService.Consumers;
 using Thunders.TechTest.ApiService.Repositories.Seed;
-using Thunders.TechTest.OutOfBox.Queues;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -25,15 +23,14 @@ builder.Services.ConfigureSwagger(builder.Configuration);
 builder.AddServiceDefaults();
 
 builder.Services.RegisterInterfaces();
-builder.Services.ConfigureMessageHandlers();
 builder.Services.AddControllers();
 
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddProblemDetails();
 builder.Services.AddHealthChecks();
 
-builder.Services.AddBus(builder.Configuration, new SubscriptionBuilder()
-            .Add<GenerateReportDataConsumer>());
+//builder.Services.AddBus(builder.Configuration, new SubscriptionBuilder()
+//            .Add<GenerateReportDataConsumer>());
 
 var app = builder.Build();
 

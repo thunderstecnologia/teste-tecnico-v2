@@ -8,7 +8,7 @@ using Rebus.Activation;
 using Rebus.Config;
 using Rebus.Routing.TypeBased;
 using System.Text;
-//using Thunders.TechTest.ApiService.Consumers;
+using Thunders.TechTest.ApiService.Consumers;
 using Thunders.TechTest.ApiService.Controllers;
 using Thunders.TechTest.ApiService.Controllers.Interfaces;
 using Thunders.TechTest.ApiService.Controllers.Internal;
@@ -32,6 +32,13 @@ namespace Thunders.TechTest.ApiService.Configurations.Extensions
 {
     public static class ServiceExtensions
     {
+        //public static IServiceCollection ConfigureDatabase(this IServiceCollection services, IConfiguration configuration)
+        //{
+        //    services.AddDbContext<AppDbContext>(options =>
+        //        options.UseSqlServer(configuration.GetConnectionString("DefaultConnection")));
+        //    return services;
+        //}
+
         public static IServiceCollection ConfigureIdentity(this IServiceCollection services, IConfiguration configuration)
         {
             services.AddIdentity<IdentityUser, IdentityRole>()
@@ -101,18 +108,21 @@ namespace Thunders.TechTest.ApiService.Configurations.Extensions
         {
             var appConfig = configuration.Get<AppConfiguration>();
             if (appConfig == null || appConfig.Features == null)
+            {
                 throw new InvalidOperationException("AppConfiguration or FeaturesSettings not configured properly.");
-            var features = appConfig.Features;
-            //if (features.UseMessageBroker)
-            //{
-            //    services.AddBus(configuration, new SubscriptionBuilder());
-            //}
-            if (features.UseEntityFramework)
+            }
+
+            if (appConfig.Features.UseMessageBroker)
+            {
+                services.AddBus(configuration, new SubscriptionBuilder().Add<GenerateReportDataConsumer>());
+            }
+
+            if (appConfig.Features.UseEntityFramework)
             {
                 services.AddDbContext<AppDbContext>(options =>
                     options.UseSqlServer(configuration.GetConnectionString("DefaultConnection")));
-                //services.AddSqlServerDbContext<AppDbContext>(configuration);
             }
+            
             return services;
         }
 
@@ -186,20 +196,6 @@ namespace Thunders.TechTest.ApiService.Configurations.Extensions
             services.AddTransient<IReportStrategy, VehicleTypeCountReportStrategy>();
             services.AddSingleton<IReportStrategyFactory, ReportStrategyFactory>();
             services.AddScoped<IReportMapper, ReportMapper>();
-            return services;
-        }
-
-        public static IServiceCollection ConfigureMessageHandlers(this IServiceCollection services)
-        {
-            //services.AddRebus(config => config
-            //    .Transport(t => t.UseRabbitMq("amqp://guest:guest@localhost:5672", "Thunders.TechTest"))
-            //    .Routing(r =>
-            //    {
-            //        r.TypeBased().MapAssemblyOf<GenerateReportMessage>("MinhaFilaDeDestino");
-            //    })
-            //);
-            //services.AutoRegisterHandlersFromAssemblyOf<GenerateReportDataConsumer>();
-
             return services;
         }
     }

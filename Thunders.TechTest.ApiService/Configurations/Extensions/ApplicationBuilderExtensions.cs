@@ -33,8 +33,6 @@ namespace Thunders.TechTest.ApiService.Configurations.Extensions
             app.UseAuthentication();
             app.UseAuthorization();
 
-            //app.MapHealthChecks("/health");
-
             // Mapeamento dos endpoints
             app.MapDefaultEndpoints();
             app.MapControllers();
