@@ -11,6 +11,8 @@ using Thunders.TechTest.ApiService.Controllers;
 using Thunders.TechTest.ApiService.Controllers.Interfaces;
 using Thunders.TechTest.ApiService.Controllers.Internal;
 using Thunders.TechTest.ApiService.Controllers.Internal.Interfaces;
+using Thunders.TechTest.ApiService.Mapper;
+using Thunders.TechTest.ApiService.Mapper.Interfaces;
 using Thunders.TechTest.ApiService.Reports.Strategies;
 using Thunders.TechTest.ApiService.Reports.Strategies.Interfaces;
 using Thunders.TechTest.ApiService.Repositories;
@@ -192,6 +194,7 @@ namespace Thunders.TechTest.ApiService.Configurations.Extensions
         {
             services.AddScoped<ITollRecordController, TollRecordController>();
             services.AddScoped<ITollRecordInternalController, TollRecordInternalController>();
+            services.AddScoped<IReportController, ReportController>();
             return services;
         }
 
@@ -199,12 +202,14 @@ namespace Thunders.TechTest.ApiService.Configurations.Extensions
         {
             services.AddScoped<ITollRecordService, TollRecordService>();
             services.AddScoped<ITollRecordInternalService, TollRecordInternalService>();
+            services.AddScoped<IReportService, ReportService>();
             return services;
         }
 
         public static IServiceCollection ConfigureRepositories(this IServiceCollection services)
         {
             services.AddScoped<ITollRecordRepository, TollRecordRepository>();
+            services.AddScoped<IReportRepository, ReportRepository>();
             return services;
         }
 
@@ -215,6 +220,13 @@ namespace Thunders.TechTest.ApiService.Configurations.Extensions
             services.AddTransient<IReportStrategy, VehicleTypeCountReportStrategy>();
 
             services.AddSingleton<IReportStrategyFactory, ReportStrategyFactory>();
+
+            return services;
+        }
+
+        public static IServiceCollection ConfigureMappers(this IServiceCollection services)
+        {
+            services.AddScoped<IReportMapper, ReportMapper>();
 
             return services;
         }
