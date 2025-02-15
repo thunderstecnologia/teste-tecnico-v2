@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
 using Thunders.TechTest.ApiService.Dto.Filter;
 using Thunders.TechTest.ApiService.Reports;
@@ -8,6 +9,7 @@ using Thunders.TechTest.ApiService.Repositories.Configurations;
 
 namespace Thunders.TechTest.ApiService.Controllers
 {
+    [Authorize]
     [ApiController]
     [Route("api/[controller]")]
     public class ReportController : ControllerBase
