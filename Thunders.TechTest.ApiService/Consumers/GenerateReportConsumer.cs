@@ -12,16 +12,18 @@ namespace Thunders.TechTest.ApiService.Consumers
     public class GenerateReportConsumer : IHandleMessages<GenerateReportMessage>
     {
         private readonly AppDbContext _dbContext;
+        private readonly IReportStrategyFactory _strategyFactory;
 
-        public GenerateReportConsumer(AppDbContext dbContext)
+        public GenerateReportConsumer(AppDbContext dbContext, IReportStrategyFactory strategyFactory)
         {
             _dbContext = dbContext;
+            _strategyFactory = strategyFactory;
         }
 
         public async Task Handle(GenerateReportMessage message)
         {
-            // Processamento do relatório
-            var report = GenerateReportAsync(message);
+            var strategy = _strategyFactory.GetStrategy(message.ReportType);
+            var report = await strategy.GenerateReport(_dbContext, message);
 
             if (!string.IsNullOrWhiteSpace(message.CallbackUrl))
             {
@@ -31,7 +33,7 @@ namespace Thunders.TechTest.ApiService.Consumers
             }
             else
             {
-                // Persistir ou tratar o relatório conforme necessário
+                // Persista ou trate o relatório conforme necessário
             }
         }
 

@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Thunders.TechTest.ApiService.Reports.Enums;
 using Thunders.TechTest.ApiService.Reports.Strategies.Interfaces;
 using Thunders.TechTest.ApiService.Repositories.Configurations;
 
@@ -6,6 +7,8 @@ namespace Thunders.TechTest.ApiService.Reports.Strategies
 {
     public class VehicleTypeCountReportStrategy : IReportStrategy
     {
+        public ReportType ReportType => ReportType.VehicleTypeCount;
+
         public async Task<object> GenerateReport(AppDbContext dbContext, GenerateReportMessage message)
         {
             var reportData = await dbContext.TollRecords
@@ -18,7 +21,12 @@ namespace Thunders.TechTest.ApiService.Reports.Strategies
                 })
                 .ToListAsync();
 
-            return reportData;
+            return new
+            {
+                ReportType = ReportType.ToString(),
+                GeneratedAt = DateTime.UtcNow,
+                Data = reportData
+            };
         }
     }
 }

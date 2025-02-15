@@ -1,9 +1,11 @@
-﻿using Thunders.TechTest.ApiService.Repositories.Configurations;
+﻿using Thunders.TechTest.ApiService.Reports.Enums;
+using Thunders.TechTest.ApiService.Repositories.Configurations;
 
 namespace Thunders.TechTest.ApiService.Reports.Strategies.Interfaces
 {
     public interface IReportStrategy
     {
+        ReportType ReportType { get; }
         Task<object> GenerateReport(AppDbContext dbContext, GenerateReportMessage message);
     }
 }

@@ -28,6 +28,7 @@ builder.Services
 builder.AddServiceDefaults();
 
 builder.Services
+    .ConfigureStrategies()
     .ConfigureRepositories()
     .ConfigureServices()
     .ConfigureControllers()

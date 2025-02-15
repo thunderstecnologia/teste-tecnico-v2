@@ -11,6 +11,8 @@ using Thunders.TechTest.ApiService.Controllers;
 using Thunders.TechTest.ApiService.Controllers.Interfaces;
 using Thunders.TechTest.ApiService.Controllers.Internal;
 using Thunders.TechTest.ApiService.Controllers.Internal.Interfaces;
+using Thunders.TechTest.ApiService.Reports.Strategies.Interfaces;
+using Thunders.TechTest.ApiService.Reports.Strategies;
 using Thunders.TechTest.ApiService.Repositories;
 using Thunders.TechTest.ApiService.Repositories.Configurations;
 using Thunders.TechTest.ApiService.Repositories.Interfaces;
@@ -211,6 +213,17 @@ namespace Thunders.TechTest.ApiService.Configurations.Extensions
         public static IServiceCollection ConfigureRepositories(this IServiceCollection services)
         {
             services.AddScoped<ITollRecordRepository, TollRecordRepository>();
+            return services;
+        }
+
+        public static IServiceCollection ConfigureStrategies(this IServiceCollection services)
+        {
+            services.AddTransient<IReportStrategy, TotalValueByHourByCityReportStrategy>();
+            services.AddTransient<IReportStrategy, TopTollPlazasReportStrategy>();
+            services.AddTransient<IReportStrategy, VehicleTypeCountReportStrategy>();
+
+            services.AddSingleton<IReportStrategyFactory, ReportStrategyFactory>();
+
             return services;
         }
     }
