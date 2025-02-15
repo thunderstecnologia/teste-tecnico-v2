@@ -27,6 +27,7 @@ builder.Services
 builder.AddServiceDefaults();
 
 builder.Services
+    .ConfigureMappers()
     .ConfigureStrategies()
     .ConfigureRepositories()
     .ConfigureServices()
