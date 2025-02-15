@@ -1,11 +1,11 @@
 ﻿using Thunders.TechTest.ApiService.Dto.Request;
 using Thunders.TechTest.ApiService.Dto.Response;
-using Thunders.TechTest.ApiService.Mapper.Interfaces;
+using Thunders.TechTest.ApiService.Mappers.Interfaces;
 using Thunders.TechTest.ApiService.Models;
 using Thunders.TechTest.ApiService.Reports;
 using Thunders.TechTest.ApiService.Reports.Enums;
 
-namespace Thunders.TechTest.ApiService.Mapper
+namespace Thunders.TechTest.ApiService.Mappers
 {
     public class ReportMapper : IReportMapper
     {

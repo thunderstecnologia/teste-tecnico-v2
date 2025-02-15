@@ -10,7 +10,7 @@ namespace Thunders.TechTest.ApiService.Repositories.Configurations
         public AppDbContext(DbContextOptions<AppDbContext> options) : base(options) { }
 
         public DbSet<TollRecord> TollRecords { get; set; }
-        public DbSet<Report> Reports { get; set; }
+        public virtual DbSet<Report> Reports { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

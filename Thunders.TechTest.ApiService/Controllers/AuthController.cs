@@ -45,7 +45,7 @@ namespace Thunders.TechTest.ApiService.Controllers
             var key = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(secret));
             var credentials = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
 
-            var roles = await _userManager.GetRolesAsync(user);
+            var roles = await _userManager.GetRolesAsync(user) ?? new List<string>();
 
             var claims = new List<Claim>
             {        

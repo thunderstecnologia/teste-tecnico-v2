@@ -3,7 +3,7 @@ using Thunders.TechTest.ApiService.Dto.Response;
 using Thunders.TechTest.ApiService.Models;
 using Thunders.TechTest.ApiService.Reports;
 
-namespace Thunders.TechTest.ApiService.Mapper.Interfaces
+namespace Thunders.TechTest.ApiService.Mappers.Interfaces
 {
     public interface IReportMapper
     {
