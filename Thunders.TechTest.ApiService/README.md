@@ -62,4 +62,10 @@ dotnet ef database update -p Thunders.TechTest.ApiService/Thunders.TechTest.ApiS
 
 ```
 
+```powershell
+dotnet ef migrations add UpdateReportEntity -p Thunders.TechTest.ApiService/Thunders.TechTest.ApiService.csproj -s Thunders.TechTest.ApiService/Thunders.TechTest.ApiService.csproj --context AppDbContext
+```
 
+```powershell
+dotnet ef database update -p Thunders.TechTest.ApiService/Thunders.TechTest.ApiService.csproj -s Thunders.TechTest.ApiService/Thunders.TechTest.ApiService.csproj --context AppDbContext
+```
