@@ -14,22 +14,29 @@ builder.Services.Configure<AppConfiguration>(builder.Configuration);
 
 builder.Host.ConfigureSerilog(builder.Configuration);
 
-builder.Services.ConfigureDatabase(builder.Configuration);
-builder.Services.ConfigureIdentity(builder.Configuration);
-builder.Services.ConfigureJwtAuthentication(builder.Configuration);
-builder.Services.ConfigureOpenTelemetry(builder.Configuration);
-builder.Services.ConfigureFeatures(builder.Configuration);
-builder.Services.ConfigureSwagger(builder.Configuration);
-builder.Services.ConfigureCors();
+builder.Services
+    .ConfigureDatabase(builder.Configuration)
+    .ConfigureIdentity(builder.Configuration)
+    .ConfigureJwtAuthentication(builder.Configuration)
+    .ConfigureOpenTelemetry(builder.Configuration)
+    .ConfigureFeatures(builder.Configuration)
+    .ConfigureSwagger(builder.Configuration)
+    .ConfigureRabbitMQ(builder.Configuration)
+    .ConfigureRebus()
+    .ConfigureCors();
 
 builder.AddServiceDefaults();
-builder.Services.ConfigureRepositories();
-builder.Services.ConfigureServices();
-builder.Services.ConfigureControllers();
-builder.Services.AddControllers();
-builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddProblemDetails();
-builder.Services.AddHealthChecks();
+
+builder.Services
+    .ConfigureRepositories()
+    .ConfigureServices()
+    .ConfigureControllers()
+    .AddControllers();
+
+builder.Services
+    .AddEndpointsApiExplorer()
+    .AddProblemDetails()
+    .AddHealthChecks();
 
 var app = builder.Build();
 

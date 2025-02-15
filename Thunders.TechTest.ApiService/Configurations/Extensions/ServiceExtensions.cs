@@ -4,7 +4,9 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using OpenTelemetry.Trace;
+using Rebus.Config;
 using System.Text;
+using Thunders.TechTest.ApiService.Consumers;
 using Thunders.TechTest.ApiService.Controllers;
 using Thunders.TechTest.ApiService.Controllers.Interfaces;
 using Thunders.TechTest.ApiService.Controllers.Internal;
@@ -117,6 +119,7 @@ namespace Thunders.TechTest.ApiService.Configurations.Extensions
             var appConfig = configuration.Get<AppConfiguration>();
             if (appConfig == null || appConfig.Swagger == null)
                 throw new InvalidOperationException("AppConfiguration or SwaggerSettings not configured properly.");
+
             var swaggerSettings = appConfig.Swagger;
             services.Configure<SwaggerSettings>(configuration.GetSection("Swagger"));
             services.AddSwaggerGen(options =>
@@ -154,7 +157,17 @@ namespace Thunders.TechTest.ApiService.Configurations.Extensions
             return services;
         }
 
-        public static void ConfigureCors(this IServiceCollection services)
+        public static IServiceCollection ConfigureRebus(this IServiceCollection services)
+        {
+            services.AddRebus(configure => configure
+                .Transport(t => t.UseRabbitMq("amqp://localhost", "report-queue")
+            ));
+
+            services.AutoRegisterHandlersFromAssemblyOf<GenerateReportConsumer>();
+            return services;
+        }
+
+        public static IServiceCollection ConfigureCors(this IServiceCollection services)
         {
             services.AddCors(options =>
             {
@@ -163,23 +176,42 @@ namespace Thunders.TechTest.ApiService.Configurations.Extensions
                                       .AllowAnyMethod()
                                       .AllowAnyHeader());
             });
+            return services;
         }
 
-        public static void ConfigureControllers(this IServiceCollection services)
+        public static IServiceCollection ConfigureRabbitMQ(this IServiceCollection services, IConfiguration configuration)
+        {
+            var rabbitMqSettings = configuration.GetSection("RabbitMQ").Get<RabbitMQSettings>();
+            if (rabbitMqSettings == null)
+                throw new InvalidOperationException("RabbitMQSettings not configured properly.");
+
+            services.Configure<RabbitMQSettings>(configuration.GetSection("RabbitMQ"));
+
+            services.AddRebus(configure => configure
+                .Transport(t => t.UseRabbitMq(rabbitMqSettings.Host, rabbitMqSettings.Queue))
+            );
+
+            return services;
+        }
+
+        public static IServiceCollection ConfigureControllers(this IServiceCollection services)
         {
             services.AddScoped<ITollRecordController, TollRecordController>();
             services.AddScoped<ITollRecordInternalController, TollRecordInternalController>();
+            return services;
         }
 
-        public static void ConfigureServices(this IServiceCollection services)
+        public static IServiceCollection ConfigureServices(this IServiceCollection services)
         {
             services.AddScoped<ITollRecordService, TollRecordService>();
             services.AddScoped<ITollRecordInternalService, TollRecordInternalService>();
+            return services;
         }
 
-        public static void ConfigureRepositories(this IServiceCollection services)
+        public static IServiceCollection ConfigureRepositories(this IServiceCollection services)
         {
             services.AddScoped<ITollRecordRepository, TollRecordRepository>();
+            return services;
         }
     }
 }
