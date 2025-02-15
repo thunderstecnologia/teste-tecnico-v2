@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.Options;
+﻿using Rebus.ServiceProvider;
+using Microsoft.Extensions.Options;
 using Serilog;
 
 namespace Thunders.TechTest.ApiService.Configurations.Extensions
@@ -32,11 +33,11 @@ namespace Thunders.TechTest.ApiService.Configurations.Extensions
             app.UseAuthentication();
             app.UseAuthorization();
 
+            //app.MapHealthChecks("/health");
+
             // Mapeamento dos endpoints
             app.MapDefaultEndpoints();
             app.MapControllers();
-
-            app.UseCors("AllowAll");
 
             return app;
         }

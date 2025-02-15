@@ -27,12 +27,6 @@ namespace Thunders.TechTest.ApiService.Controllers
         [HttpPost("GenerateTopTollPlazasReport")]
         public async Task<IActionResult> GenerateTopTollPlazasReportRequest([FromBody] TopTollPlazasReportRequestDto request)
         {
-            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-            if (userId == null)
-            {
-                return Unauthorized();
-            }
-
             var createdBy = User.FindFirstValue(ClaimTypes.Email) ?? User.Identity?.Name;
             if (createdBy == null)
             {
@@ -47,12 +41,6 @@ namespace Thunders.TechTest.ApiService.Controllers
         [HttpPost("GenerateTotalValueByHourByCityReport")]
         public async Task<IActionResult> GenerateTotalValueByHourByCityReportRequest([FromBody] TotalValueByHourByCityReportRequestDto request)
         {
-            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-            if (userId == null)
-            {
-                return Unauthorized();
-            }
-
             var createdBy = User.FindFirstValue(ClaimTypes.Email) ?? User.Identity?.Name;
             if (createdBy == null)
             {
@@ -67,12 +55,6 @@ namespace Thunders.TechTest.ApiService.Controllers
         [HttpPost("GenerateVehicleTypeCountReport")]
         public async Task<IActionResult> GenerateVehicleTypeCountReportRequest([FromBody] VehicleTypeCountReportRequestDto request)
         {
-            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-            if (userId == null)
-            {
-                return Unauthorized();
-            }
-
             var createdBy = User.FindFirstValue(ClaimTypes.Email) ?? User.Identity?.Name;
             if (createdBy == null)
             {

@@ -1,6 +1,8 @@
 using Thunders.TechTest.ApiService.Configurations;
 using Thunders.TechTest.ApiService.Configurations.Extensions;
+using Thunders.TechTest.ApiService.Consumers;
 using Thunders.TechTest.ApiService.Repositories.Seed;
+using Thunders.TechTest.OutOfBox.Queues;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -14,30 +16,24 @@ builder.Services.Configure<AppConfiguration>(builder.Configuration);
 
 builder.Host.ConfigureSerilog(builder.Configuration);
 
-builder.Services
-    .ConfigureDatabase(builder.Configuration)
-    .ConfigureIdentity(builder.Configuration)
-    .ConfigureJwtAuthentication(builder.Configuration)
-    .ConfigureOpenTelemetry(builder.Configuration)
-    .ConfigureFeatures(builder.Configuration)
-    .ConfigureSwagger(builder.Configuration)
-    .ConfigureRabbitMQ(builder.Configuration)
-    .ConfigureCors();
+builder.Services.ConfigureIdentity(builder.Configuration);
+builder.Services.ConfigureJwtAuthentication(builder.Configuration);
+builder.Services.ConfigureOpenTelemetry(builder.Configuration);
+builder.Services.ConfigureFeatures(builder.Configuration);
+builder.Services.ConfigureSwagger(builder.Configuration);
 
 builder.AddServiceDefaults();
 
-builder.Services
-    .ConfigureMappers()
-    .ConfigureStrategies()
-    .ConfigureRepositories()
-    .ConfigureServices()
-    .ConfigureControllers()
-    .AddControllers();
+builder.Services.RegisterInterfaces();
+builder.Services.ConfigureMessageHandlers();
+builder.Services.AddControllers();
 
-builder.Services
-    .AddEndpointsApiExplorer()
-    .AddProblemDetails()
-    .AddHealthChecks();
+builder.Services.AddEndpointsApiExplorer();
+builder.Services.AddProblemDetails();
+builder.Services.AddHealthChecks();
+
+builder.Services.AddBus(builder.Configuration, new SubscriptionBuilder()
+            .Add<GenerateReportDataConsumer>());
 
 var app = builder.Build();
 

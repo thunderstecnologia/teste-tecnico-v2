@@ -7,12 +7,13 @@ using Thunders.TechTest.ApiService.Models;
 using Thunders.TechTest.ApiService.Reports;
 using Thunders.TechTest.ApiService.Repositories.Interfaces;
 using Thunders.TechTest.ApiService.Services.Interfaces;
+using Thunders.TechTest.OutOfBox.Queues;
 
 namespace Thunders.TechTest.ApiService.Services
 {
     public class ReportService : IReportService
     {
-        private readonly IBus _bus;
+        private readonly RebusMessageSender _messageSender;
         private readonly IReportRepository _reportRepository;
         private readonly IReportMapper _reportMapper;
 
@@ -21,7 +22,7 @@ namespace Thunders.TechTest.ApiService.Services
             IReportRepository reportRepository,
             IReportMapper reportMapper)
         {
-            _bus = bus;
+            _messageSender = new RebusMessageSender(bus);
             _reportRepository = reportRepository;
             _reportMapper = reportMapper;
         }
@@ -61,7 +62,8 @@ namespace Thunders.TechTest.ApiService.Services
         {
             var savedReport = await _reportRepository.SaveReportRequestAsync(reportRequest);
             message.ReportId = savedReport.Id;
-            await _bus.Send(message);
+            await _messageSender.SendLocal(message);
+            await _messageSender.Publish(message);
             return _reportMapper.MapToReportRequestResponse(savedReport);
         }
     }
