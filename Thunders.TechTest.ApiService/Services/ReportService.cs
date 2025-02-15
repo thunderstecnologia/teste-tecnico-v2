@@ -8,6 +8,7 @@ using Thunders.TechTest.ApiService.Dto.Request;
 using Thunders.TechTest.ApiService.Dto.Response;
 using Thunders.TechTest.ApiService.Repositories.Interfaces;
 using Thunders.TechTest.ApiService.Mapper.Interfaces;
+using System.Text.Json;
 
 namespace Thunders.TechTest.ApiService.Services
 {
@@ -57,6 +58,14 @@ namespace Thunders.TechTest.ApiService.Services
             return _reportMapper.MapToReportRequestResponse(savedReport);
         }
 
-
+        public async Task<string> GetReportByIdAsync(long reportId)
+        {
+            var report = await _reportRepository.GetByIdAsync(reportId);
+            if (report == null)
+            {
+                throw new KeyNotFoundException($"Report with ID {reportId} not found.");
+            }
+            return JsonSerializer.Serialize(report.Data);
+        }
     }
 }

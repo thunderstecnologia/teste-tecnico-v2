@@ -1,5 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using Rebus.Bus;
+using Thunders.TechTest.ApiService.Dto;
 using Thunders.TechTest.ApiService.Reports.Enums;
 using Thunders.TechTest.ApiService.Reports.Strategies.Interfaces;
 using Thunders.TechTest.ApiService.Repositories.Configurations;
@@ -10,7 +10,7 @@ namespace Thunders.TechTest.ApiService.Reports.Strategies
     {
         public ReportType ReportType => ReportType.VehicleTypeCount;
 
-        public async Task<object> GenerateReportData(AppDbContext dbContext, GenerateReportMessage message)
+        public async Task<ReportMetadataDto> GenerateReportData(AppDbContext dbContext, GenerateReportMessage message)
         {
             var reportData = await dbContext.TollRecords
                 .Where(r => r.TollBooth == message.TollBooth)
@@ -22,17 +22,12 @@ namespace Thunders.TechTest.ApiService.Reports.Strategies
                 })
                 .ToListAsync();
 
-            return new
+            return new ReportMetadataDto
             {
-                ReportType = ReportType.ToString(),
+                ReportType = ReportType,
                 GeneratedAt = DateTime.UtcNow,
                 Data = reportData
             };
-        }
-
-        public async Task SendMessageToRabbitMQ(IBus bus, GenerateReportMessage message)
-        {
-            await bus.Send(message);
         }
     }
 }

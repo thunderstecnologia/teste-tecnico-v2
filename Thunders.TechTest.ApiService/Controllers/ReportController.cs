@@ -86,5 +86,16 @@ namespace Thunders.TechTest.ApiService.Controllers
             var response = await _reportService.GenerateAndSaveReportAsync(request);
             return Ok(response);
         }
+
+        [HttpGet("{id}")]
+        public async Task<IActionResult> GetByIdAsync(long id)
+        {
+            var report = await _reportService.GetReportByIdAsync(id);
+            if (report == null)
+            {
+                return NotFound();
+            }
+            return Ok(report);
+        }
     }
 }

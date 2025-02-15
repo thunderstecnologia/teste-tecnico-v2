@@ -183,7 +183,7 @@ namespace Thunders.TechTest.ApiService.Configurations.Extensions
                 .Transport(t => t.UseRabbitMq(rabbitMqSettings.Host, rabbitMqSettings.Queue))
             );
 
-            services.AutoRegisterHandlersFromAssemblyOf<GenerateReportConsumer>();
+            services.AutoRegisterHandlersFromAssemblyOf<GenerateReportDataConsumer>();
 
             return services;
         }

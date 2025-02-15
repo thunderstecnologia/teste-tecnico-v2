@@ -8,5 +8,6 @@ namespace Thunders.TechTest.ApiService.Controllers.Interfaces
         Task<IActionResult> GenerateTotalValueByHourByCityReportRequest([FromBody] TotalValueByHourByCityReportRequestDto request);
         Task<IActionResult> GenerateTopTollPlazasReportRequest([FromBody] TopTollPlazasReportRequestDto request);
         Task<IActionResult> GenerateVehicleTypeCountReportRequest([FromBody] VehicleTypeCountReportRequestDto request);
+        Task<IActionResult> GetByIdAsync(long id);
     }
 }

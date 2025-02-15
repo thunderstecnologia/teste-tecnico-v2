@@ -19,5 +19,10 @@ namespace Thunders.TechTest.ApiService.Repositories
             await _context.SaveChangesAsync();
             return request;
         }
+
+        public async Task<Report?> GetByIdAsync(long reportId)
+        {
+            return await _context.Reports.FindAsync(reportId);
+        }
     }
 }
