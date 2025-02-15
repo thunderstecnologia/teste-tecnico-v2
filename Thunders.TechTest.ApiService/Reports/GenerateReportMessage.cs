@@ -9,7 +9,7 @@ namespace Thunders.TechTest.ApiService.Reports
         public DateTime? StartDate { get; set; }
         public DateTime? EndDate { get; set; }
         public int? Quantity { get; set; }
-        public string? TollBoothId { get; set; }
+        public string? TollBooth { get; set; }
         public required string CreatedBy { get; set; }
     }
 }

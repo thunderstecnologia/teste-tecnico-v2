@@ -11,7 +11,7 @@ namespace Thunders.TechTest.ApiService.Models
         [Required]
         public required string ReportType { get; set; }
         public DateTime GeneratedAt { get; set; }
-        public string Data { get; set; }
+        public string? Data { get; set; }
         [Required, MaxLength(100)]
         public required string CreatedBy { get; set; }
         [Required]

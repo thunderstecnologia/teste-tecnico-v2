@@ -12,7 +12,7 @@ namespace Thunders.TechTest.ApiService.Reports.Strategies
         public async Task<object> GenerateReport(AppDbContext dbContext, GenerateReportMessage message)
         {
             var reportData = await dbContext.TollRecords
-                .Where(r => r.TollBooth == message.TollBoothId)
+                .Where(r => r.TollBooth == message.TollBooth)
                 .GroupBy(r => r.VehicleType)
                 .Select(g => new
                 {
